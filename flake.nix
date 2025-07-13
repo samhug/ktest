@@ -28,5 +28,18 @@
           inherit preBuiltKernel srcBuildKernel;
           default = if (import buildRoot).isPreBuilt then preBuiltKernel else srcBuildKernel;
         };
+        devShells.default = pkgs.mkShell {
+          name = "ktest";
+          inputsFrom = [ pkgs.linux_testing ];
+          packages = with pkgs; [
+            (qemu.override { hostCpuOnly = true; })
+            minicom
+            socat
+            vde2
+            e2fsprogs
+            brotli
+            clang
+          ];
+        };
     });
 }
